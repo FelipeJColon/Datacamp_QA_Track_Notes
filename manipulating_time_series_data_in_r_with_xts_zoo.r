@@ -188,3 +188,33 @@ z_dup <- make.index.unique(z, drop = TRUE)
 
 # Round observations in z to the next hour - n is the number of hours
 z_round <- align.time(z, n = 3600)
+
+
+#EX: Read text file containing multiple instruments
+# Read data with read.csv
+two_symbols_data <- read.csv("two_symbols.csv", nrows = 5)
+two_symbols_data
+# Look at the structure of two_symbols_data
+str(two_symbols_data)
+
+# Read data with read.zoo, specifying index columns
+two_symbols_zoo <- read.zoo("two_symbols.csv", split = c("Symbol", "Type"), sep = ",", header = TRUE)
+
+# Look at first few rows of data
+head(two_symbols_zoo)
+
+#EX: Handle missing values
+# fill NA using last observation carried forward
+locf <- na.locf(DGS10)
+
+# fill NA using linear interpolation
+approx <- na.approx(DGS10)
+
+# fill NA using spline interpolation
+spline <- na.spline(DGS10)
+
+# merge into one object
+na_filled <- merge(locf, spline, approx)
+
+# plot combined object
+plot(na_filled, col = c("black", "red", "green"))
