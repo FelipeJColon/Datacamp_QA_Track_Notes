@@ -213,3 +213,82 @@ amzn_zoo <- read.zoo("AMZN.csv", sep = ",", header = TRUE)
 amzn_xts <- as.xts(amzn_zoo)
 # Look at the first few rows of amzn_xts
 head(amzn_xts)
+
+#EX: Read text file containing multiple instruments
+# Read data with read.csv
+two_symbols_data <- read.csv("two_symbols.csv", nrows = 5)
+two_symbols_data
+# Look at the structure of two_symbols_data
+str(two_symbols_data)
+# Read data with read.zoo, specifying index columns
+two_symbols_zoo <- read.zoo("two_symbols.csv", split = c("Symbol", "Type"), sep = ",", header = TRUE)
+# Look at first few rows of data
+head(two_symbols_zoo)
+
+#EX: Handle missing values
+# fill NA using last observation carried forward
+locf <- na.locf(DGS10)
+# fill NA using linear interpolation
+approx <- na.approx(DGS10)
+# fill NA using spline interpolation
+spline <- na.spline(DGS10)
+# merge into one object
+na_filled <- merge(locf, approx,spline)
+# plot combined object
+plot(na_filled, col = c("black", "red", "green"))
+
+#EX: Cross reference sources
+# Look at first few rows of aapl_raw
+head(aapl_raw)
+# Look at first few rows of aapl_split
+head(aapl_split_adjusted)
+# Plot difference between adjusted close and split-adjusted close
+plot(Ad(aapl_raw) - Cl(aapl_split_adjusted))
+# Plot difference between volume from the raw and split-adjusted sources
+plot(Vo(aapl_raw) - Vo(aapl_split_adjusted))
+
+#EX: Adjust for stock splits and dividends
+# Look at first few rows of AAPL
+head(AAPL)
+# Adjust AAPL for splits and dividends
+aapl_adjusted <- adjustOHLC(AAPL)
+# Look at first few rows of aapl_adjusted
+head(aapl_adjusted)
+
+
+#EX: Download split and dividend data
+# Download AAPL split data
+splits <- getSplits("AAPL")
+# Download AAPL dividend data
+dividends <- getDividends("AAPL")
+# Look at the first few rows of dividends
+head(dividends)
+# Download unadjusted AAPL dividend data
+raw_dividends <- getDividends("AAPL", split.adjust = FALSE)
+# Look at the first few rows of raw_dividends
+head(raw_dividends)
+
+#Adjust univariate data for splits and dividends
+# Calculate split and dividend adjustment ratios
+ratios <- adjRatios(splits = splits, dividends = raw_dividends, close = Cl(AAPL))
+# Calculate adjusted close for AAPL
+aapl_adjusted <- Cl(AAPL) * ratios[, "Split"] * ratios[, "Div"]
+# Look at first few rows of Yahoo adjusted close
+head(Ad(AAPL))
+# Look at first few rows of aapl_adjusted
+head(aapl_adjusted)
+
+#Ex: Asset prices vs. asset returns
+# Plot eu_stocks
+plot(eu_stocks)
+# Use this code to convert prices to returns
+# !!!Important to remember
+returns <- eu_stocks[-1,] / eu_stocks[-1860,] - 1
+# Convert returns to ts
+returns <- ts(returns, start = c(1991, 130), frequency = 260)
+# Plot returns
+plot(returns)
+# Use this code to convert prices to log returns
+logreturns <- diff(log(eu_stocks))
+# Plot logreturns
+plot(logreturns)
