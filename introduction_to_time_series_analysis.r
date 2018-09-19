@@ -302,8 +302,8 @@ BIC(AR)
 BIC(MA)
 
 
-Plot A shows autocorrelation for the first lag only, 
-which is consistent with the expectations of the MA model. 
-Plot B shows dissipating autocorrelation across several lags, 
-consistent with the AR model. Plot C is consistent with a RW model with considerable autocorrelation for many lags. 
-Finally. Plot D shows virtually no autocorrelation with any lags, consistent with a WN model.
+# Plot A shows autocorrelation for the first lag only, 
+# which is consistent with the expectations of the MA model. 
+# Plot B shows dissipating autocorrelation across several lags, 
+# consistent with the AR model. Plot C is consistent with a RW model with considerable autocorrelation for many lags. 
+# Finally. Plot D shows virtually no autocorrelation with any lags, consistent with a WN model.
