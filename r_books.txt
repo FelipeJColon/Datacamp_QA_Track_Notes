@@ -1,0 +1,10 @@
+intro
+- R for everyone - Lander
+- R for data Science - Grolemund & wickham
+- Art of R programming - Matloff 
+- Use R series 
+
+Advanced
+- Advanced - R wickham
+- S programming - Venables & Ripley
+- Software for data analysis - Chambers
